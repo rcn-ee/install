@@ -64,8 +64,16 @@ start() {
     NODE_VERSION=$NODE_VERSION_ARM_PI
   fi
   
+  
   if [ "$os" != "linux" ] && [ "$os" != "darwin" ]; then
     echo "Unsupported Platform: $os $arch" 1>&2
+    if [ "$os" == "freebsd" ]; then
+      echo "run"
+      echo "sudo pkg install -y tmux npm node python gmake"
+      echo ""
+      echo "to install"
+    fi
+    
     exit 1
   fi
   
