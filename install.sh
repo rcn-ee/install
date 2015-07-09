@@ -238,14 +238,12 @@ ensure_local_gyp() {
 node(){
   # clean up 
   rm -rf node 
-  rm -rf node-$NODE_VERSION*
   
-  echo :Installing Node $NODE_VERSION
+  echo :Using Node `/usr/bin/nodejs --version`
   
-  $DOWNLOAD https://nodejs.org/dist/$NODE_VERSION/node-$NODE_VERSION-$1-$2.tar.gz
-  tar xzf node-$NODE_VERSION-$1-$2.tar.gz
-  mv node-$NODE_VERSION-$1-$2 node
-  rm node-$NODE_VERSION-$1-$2.tar.gz
+  mkdir -p $C9_DIR/node/bin
+  ln -s /usr/bin/nodejs $C9_DIR/node/bin/node
+  ln -s /usr/bin/npm $C9_DIR/node/bin/
 
   # use local npm cache
   "$NPM" config -g set cache  "$C9_DIR/tmp/.npm"
