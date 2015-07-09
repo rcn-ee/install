@@ -28,6 +28,8 @@ C9_DIR=$HOME/.c9
 NPM=$C9_DIR/node/bin/npm
 NODE=$C9_DIR/node/bin/node
 
+git_dir=$PWD
+
 export TMP=$C9_DIR/tmp
 export TMPDIR=$TMP
 
@@ -206,7 +208,11 @@ check_python() {
 
 downlaod_virtualenv() {
   VIRTUALENV_VERSION="virtualenv-12.0.7"
-  $DOWNLOAD "https://pypi.python.org/packages/source/v/virtualenv/$VIRTUALENV_VERSION.tar.gz"
+  if [ -f ${git_dir}/packages/virtualenv/$VIRTUALENV_VERSION.tar.gz ] ; then
+    cp ${git_dir}/packages/virtualenv/$VIRTUALENV_VERSION.tar.gz $VIRTUALENV_VERSION.tar.gz
+  else
+    $DOWNLOAD "https://pypi.python.org/packages/source/v/virtualenv/$VIRTUALENV_VERSION.tar.gz"
+  fi
   tar xzf $VIRTUALENV_VERSION.tar.gz
   rm $VIRTUALENV_VERSION.tar.gz
   mv $VIRTUALENV_VERSION virtualenv
@@ -240,10 +246,10 @@ node(){
   rm -rf node 
   
   echo :Using Node `/usr/bin/nodejs --version`
-  
-  mkdir -p $C9_DIR/node/bin
-  ln -s /usr/bin/nodejs $C9_DIR/node/bin/node
-  ln -s /usr/bin/npm $C9_DIR/node/bin/
+  mkdir -p "$C9_DIR/node/bin"
+
+  ln -sf $(which nodejs) "$C9_DIR"/node/bin/node
+  ln -sf $(which npm) "$C9_DIR"/node/bin/
 
   # use local npm cache
   "$NPM" config -g set cache  "$C9_DIR/tmp/.npm"
@@ -363,7 +369,12 @@ tmux_install(){
 
 vfsextend(){
   echo :Installing VFS extend
-  $DOWNLOAD https://raw.githubusercontent.com/c9/install/master/packages/extend/c9-vfs-extend.tar.gz
+
+  if [ -f ${git_dir}/packages/extend/c9-vfs-extend.tar.gz ] ; then
+    cp ${git_dir}/packages/extend/c9-vfs-extend.tar.gz c9-vfs-extend.tar.gz
+  else
+    $DOWNLOAD https://raw.githubusercontent.com/c9/install/master/packages/extend/c9-vfs-extend.tar.gz
+  fi
   tar xzf c9-vfs-extend.tar.gz
   rm c9-vfs-extend.tar.gz
 }
@@ -375,7 +386,13 @@ collab(){
   "$NPM" install sequelize@2.0.0-beta.0
   mkdir -p "$C9_DIR"/lib
   cd "$C9_DIR"/lib
-  $DOWNLOAD https://raw.githubusercontent.com/c9/install/master/packages/sqlite3/linux/sqlite3.tar.gz
+
+  if [ -f ${git_dir}/packages/sqlite3/linux/sqlite3.tar.gz ] ; then
+    cp ${git_dir}/packages/sqlite3/linux/sqlite3.tar.gz sqlite3.tar.gz
+  else
+    $DOWNLOAD https://raw.githubusercontent.com/c9/install/master/packages/sqlite3/linux/sqlite3.tar.gz
+  fi
+
   tar xzf sqlite3.tar.gz
   rm sqlite3.tar.gz
   ln -sf "$C9_DIR"/lib/sqlite3/sqlite3 "$C9_DIR"/bin/sqlite3
