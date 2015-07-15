@@ -443,7 +443,6 @@ ptyjs(){
   fi
 
   pkg="node-gyp" ; do_npmbox
-  pkg="pty.js@0.2.7-1" ; do_npmbox_version
 }
 
 coffee(){
