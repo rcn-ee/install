@@ -368,7 +368,7 @@ tmux_install(){
 }
 
 do_npmbox() {
-  version=$(npm pack ${pkg} | awk -F '-' '{print $2}' | awk -F '.tgz' '{print $1}')
+  version=$("$NPM" pack ${pkg} | awk -F '-' '{print $2}' | awk -F '.tgz' '{print $1}')
 
   if [ -f ${pkg}@${version}.npmbox ] ; then
     rm -rf ${pkg}@${version}.npmbox
