@@ -367,6 +367,20 @@ tmux_install(){
   fi
 }
 
+do_npmbox() {
+  version=$(npm pack ${pkg} | awk -F '-' '{print $2}' | awk -F '.tgz' '{print $1}')
+
+  if [ -f ${pkg}-${version}.npmbox ] ; then
+    rm -rf ${pkg}-${version}.npmbox
+  fi
+  "$NPMBOX" ${pkg}
+  mv ${pkg}.npmbox ${pkg}-${version}.npmbox
+}
+
+do_npmbox_version() {
+  "$NPMBOX" ${pkg}
+}
+
 vfsextend(){
   echo :Installing VFS extend
 
@@ -402,11 +416,7 @@ npmbox(){
   echo :Installing npmbox
   "$NPM" install npmbox
   NPMBOX=$C9_DIR/node_modules/npmbox/bin/npmbox
-
-  if [ -f npmbox.npmbox ] ; then
-    rm -rf npmbox.npmbox
-  fi
-  "$NPMBOX" npmbox
+  pkg="npmbox" ; do_npmbox
 }
 
 nak(){
@@ -426,11 +436,8 @@ ptyjs(){
 #    exit 100
 #  fi
 
-  if [ -f node-gyp.npmbox ] ; then
-    rm -rf node-gyp.npmbox
-  fi
-  "$NPMBOX" node-gyp
-#  "$NPMBOX" pty.js@0.2.7-1
+  pkg="node-gyp" ; do_npmbox
+#  pkg="pty.js@0.2.7-1" ; do_npmbox_version
 }
 
 coffee(){
