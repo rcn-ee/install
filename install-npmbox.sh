@@ -401,6 +401,9 @@ collab(){
 npmbox(){
   echo :Installing npmbox
   "$NPM" install npmbox
+  NPMBOX=$C9_DIR/node_modules/npmbox/bin/npmbox
+
+  "$NPMBOX" npmbox
 }
 
 nak(){
@@ -419,6 +422,9 @@ ptyjs(){
     echo `"$C9_DIR/node/bin/node" -e "console.log(require('pty.js'))"`
     exit 100
   fi
+
+  "$NPMBOX" node-gyp
+  "$NPMBOX" pty.js@0.2.7-1
 }
 
 coffee(){
