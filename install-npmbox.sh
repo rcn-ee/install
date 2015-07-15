@@ -410,6 +410,9 @@ collab(){
   tar xzf sqlite3.tar.gz
   rm sqlite3.tar.gz
   ln -sf "$C9_DIR"/lib/sqlite3/sqlite3 "$C9_DIR"/bin/sqlite3
+
+  pkg="sqlite3@3.0.5" ; do_npmbox_version
+  pkg="sequelize@2.0.0-beta.0" ; do_npmbox_version
 }
 
 npmbox(){
@@ -427,17 +430,17 @@ nak(){
 ptyjs(){
   echo :Installing pty.js
   "$NPM" install node-gyp
-#  "$NPM" install pty.js@0.2.7-1
+  "$NPM" install pty.js@0.2.7-1
   
-#  HASPTY=`"$C9_DIR/node/bin/node" -e "console.log(require('pty.js'))" | grep createTerminal | wc -l`
-#  if [ $HASPTY -ne 1 ]; then
-#    echo "Unknown exception installing pty.js"
-#    echo `"$C9_DIR/node/bin/node" -e "console.log(require('pty.js'))"`
-#    exit 100
-#  fi
+  HASPTY=`"$C9_DIR/node/bin/node" -e "console.log(require('pty.js'))" | grep createTerminal | wc -l`
+  if [ $HASPTY -ne 1 ]; then
+    echo "Unknown exception installing pty.js"
+    echo `"$C9_DIR/node/bin/node" -e "console.log(require('pty.js'))"`
+    exit 100
+  fi
 
   pkg="node-gyp" ; do_npmbox
-#  pkg="pty.js@0.2.7-1" ; do_npmbox_version
+  pkg="pty.js@0.2.7-1" ; do_npmbox_version
 }
 
 coffee(){
